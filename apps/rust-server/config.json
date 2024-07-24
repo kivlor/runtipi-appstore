@@ -1,0 +1,18 @@
+{
+  "$schema": "../schema.json",
+  "name": "Rust Server",
+  "available": true,
+  "exposable": true,
+  "no_gui": true,
+  "port": 28015,
+  "id": "rust-server",
+  "tipi_version": 2,
+  "version": "latest",
+  "categories": ["gaming"],
+  "description": "Rust Server",
+  "short_desc": "Run a rust server",
+  "author": "kivlor",
+  "source": "https://github.com/GameServerManagers/docker-gameserver",
+  "form_fields": [],
+  "supported_architectures": ["amd64"]
+}

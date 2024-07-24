@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  rust-server:
+    container_name: rust-server
+    image: gameservermanagers/gameserver:rust
+    ports:
+      - "28015:28015/udp"
+      - 28016:28016
+      - 28017:28017
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/config-lsgm/rustserver:/data
+    networks:
+      - tipi_main_network
+    labels:
+      # Main
+      traefik.enable: true
+      traefik.http.middlewares.rust-server-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.rust-server.loadbalancer.server.port: 25565
+      # Web
+      traefik.http.routers.rust-server-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.rust-server-insecure.entrypoints: web
+      traefik.http.routers.rust-server-insecure.service: rust-server
+      traefik.http.routers.rust-server-insecure.middlewares: rust-server-web-redirect
+      # Websecure
+      traefik.http.routers.rust-server.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.rust-server.entrypoints: websecure
+      traefik.http.routers.rust-server.service: rust-server
+      traefik.http.routers.rust-server.tls.certresolver: myresolver
+      # Local domain
+      traefik.http.routers.rust-server-local-insecure.rule: Host(`rust-server.${LOCAL_DOMAIN}`)
+      traefik.http.routers.rust-server-local-insecure.entrypoints: web
+      traefik.http.routers.rust-server-local-insecure.service: rust-server
+      traefik.http.routers.rust-server-local-insecure.middlewares: rust-server-web-redirect
+      # Local domain secure
+      traefik.http.routers.rust-server-local.rule: Host(`rust-server.${LOCAL_DOMAIN}`)
+      traefik.http.routers.rust-server-local.entrypoints: websecure
+      traefik.http.routers.rust-server-local.service: rust-server
+      traefik.http.routers.rust-server-local.tls: true
+      runtipi.managed: true
