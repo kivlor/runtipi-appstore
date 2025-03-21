@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "archivebox",
-      "image": "archivebox/archivebox:0.7.2",
+      "image": "archivebox/archivebox:0.7.3",
       "isMain": true,
       "internalPort": 8015,
       "environment": {
@@ -30,6 +30,6 @@
       ],
       "command": "server --quick-init 0.0.0.0:8015"
     }
-  ]
+  ],
+  "$schema": "../dynamic-compose-schema.json"
 }
-
